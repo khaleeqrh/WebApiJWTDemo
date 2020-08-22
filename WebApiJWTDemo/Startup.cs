@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using WebApiJWTDemo.Helpers;
 using WebApiJWTDemo.Models;
+using WebApiJWTDemo.Services;
 
 namespace WebApiJWTDemo
 {
@@ -87,6 +88,8 @@ namespace WebApiJWTDemo
                 };
             });
 
+            services.AddScoped<IUserService, UserService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,7 +103,7 @@ namespace WebApiJWTDemo
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
