@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.HttpSys;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -24,12 +25,14 @@ namespace WebApiJWTDemo.Services
         private readonly AppSettings _appSettings;
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
+        
         public UserService(ApplicationDbContext db, IOptions<AppSettings> appSettings, SignInManager<User> signInManager, UserManager<User> userManager)
         {
             _db = db;
             _appSettings = appSettings.Value;
             this.signInManager = signInManager;
             this.userManager = userManager;
+           
 
         }
 
@@ -43,8 +46,9 @@ namespace WebApiJWTDemo.Services
             }
             // return null if user not found
 
-
+            
             var result = await signInManager.CheckPasswordSignInAsync(user, password,false);
+            
 
             if (result.Succeeded)
             {
@@ -75,7 +79,7 @@ namespace WebApiJWTDemo.Services
 
         public async Task<string> Signup(User user,string password)
         {
-            var signupResult = await userManager.CreateAsync(user);
+            var signupResult = await userManager.CreateAsync(user,password);
             if (signupResult.Succeeded)
             {
                 var jwtToken = await Authenticate(user.Email, password);

@@ -48,15 +48,15 @@ namespace WebApiJWTDemo
             }
             services.AddDbContext<ApplicationDbContext>(s => s.UseSqlServer(connectionString: this.ConnectionString));
 
-
+            
 
             //Add Identity
             services.AddIdentityCore<User>(options => {
-
-
+                
+                
             });
             new IdentityBuilder(typeof(User), typeof(IdentityRole), services)
-
+                
                 .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddSignInManager<SignInManager<User>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
